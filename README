@@ -1,0 +1,13 @@
+This script turns every second page of a PDF document
+
+turnEverySecondPage <filename> <parity>
+where <parity> is either string: "even" or "odd"
+
+DEPENDENCIES: pdftk(->java), pdfinfo
+TRIVIAL DEPENDENCIES: awk, grep, echo, rm
+
+It talks to you like a butler
+MIT license, use freely
+
+for the interested reader:
+Did thou made acquainance with a person that deliberately scanned every second page of a document the wrong way round? Thy suffering shall end O end user! May turnEverySecondPage turn every second page of thy pdf. By it's delicate splitting, turning and merging abilities it splits, turns and merges thy PDF like nothing else. Thou shalt not suffer any more !
