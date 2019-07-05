@@ -11,9 +11,6 @@ pdftk=/usr/bin/pdftk
 filename=$1
 parity=$2
 
-# Array for pushing back the split file names in order to eventually merge them
-declare -a split_pdfs
-
 #Check if a file was given
 if [ -z "$filename" ]
 then
@@ -37,38 +34,17 @@ then
 	exit 1
 fi
 
-# judging from the parity, calculate which sites are to be turned around
+echo "Good Sir, your $pdfSize pages large document is being processed now"
+echo "Assembly of your delicate pdf is in progress..."
+
+# judging from the parity, which sites are to be turned around (ty to Simon)
+# shuffle is specifically for this use case...
 if [ "$parity" == "odd" ]
 then
-	turnPageMod=1
+	$pdftk $filename shuffle 1-endodddown 1-endeven output $filename"_corrected.pdf"
 else
-	turnPageMod=0
+	$pdftk $filename shuffle 1-endodd 1-endevendown output $filename"_corrected.pdf"
 fi
-
-echo "Splitting a pdf with $pdfSize pages using $parity parity"
-# Split pdf in single files, turn every second
-# note the additional space in the split_pdfs array. This is required for dereference in the end of the script
-echo "Splitting the pdf... this may take a while"
-for i in $(seq $pdfSize)
-do
-	if [ $(( $i % 2 )) -eq $turnPageMod ]
-	then
-		echo "page $i"
-		$pdftk $filename cat $i$parity"south" output $filename"_corrected"$i".pdf"
-		split_pdfs+=$filename"_corrected"$i".pdf "
-	else
-		echo "page $i"
-		$pdftk $filename cat $i output $filename"_corrected"$i".pdf"
-		split_pdfs+=$filename"_corrected"$i".pdf "
-	fi
-done
-
-echo "Reassembly of your delicate pdf is in progress..."
-$pdftk ${split_pdfs[*]} output $filename"_corrected.pdf"
-
-# finally, delete all the split pdf single pages. noone needs them
-echo "Cleaning up..."
-/usr/bin/rm ${split_pdfs[*]}
 
 # put a kind notice there that everything is done...
 echo "Done. You may find the humble result being called by the name $filename"_corrected.pdf""  
