@@ -1,10 +1,10 @@
-This script turns every second page of a PDF document
+This script turns every second page of a PDF document. It acts as a wrapper for the "pdftk shuffle" command
 
 turnEverySecondPage <filename> <parity>
 where <parity> is either string: "even" or "odd"
 
 DEPENDENCIES: pdftk(->java), pdfinfo
-TRIVIAL DEPENDENCIES: awk, grep, echo, rm
+TRIVIAL DEPENDENCIES: awk, grep, echo
 
 It talks to you like a butler
 MIT license, use freely
